@@ -41,7 +41,6 @@ class Keycloak extends AbstractOAuth2Base
         if (!isset($this->discovery)) {
             $plugin = plugin_load('helper', 'oauthkeycloak');
 
-            // wmwm fix certificate error
             $context = stream_context_create([
                 'ssl' => [
                     'verify_peer' => $plugin->getConf('verify-peer')
@@ -49,7 +48,6 @@ class Keycloak extends AbstractOAuth2Base
                 ]);
             $json = file_get_contents($plugin->getConf('openidurl'), false, $context);
 
-            // $json = file_get_contents($plugin->getConf('openidurl'));
             if (!$json) throw new \Exception('Failed accessing ' . $plugin->getConf('openidurl'));
             $this->discovery = json_decode($json, true);
         }
